@@ -25,7 +25,7 @@ export const categoryController = {
     async findByID(req: Request<CategoryParams>, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
-            const category = await categoryRepository.findByID(id);
+            const category = await categoryService.findByID(id);
             res.status(200).json(category);
         } catch (error) {
             next(error);

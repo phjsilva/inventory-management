@@ -1,5 +1,5 @@
 import { prisma } from '../../config/prisma';
-import { createCategorySchema } from './category.schema';
+import { createCategorySchema, updateCategorySchema } from './category.schema';
 
 export const categoryRepository = {
     create(data: createCategorySchema) {
@@ -27,4 +27,14 @@ export const categoryRepository = {
             where: { id },
         });
     },
+
+    updateCategory(data:updateCategorySchema) {
+        return prisma.category.update({
+            where: {id:data.id},
+            data: {
+            name: data.name,
+            description: data.description
+            }
+        })
+    }
 };

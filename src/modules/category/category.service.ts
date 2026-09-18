@@ -1,7 +1,7 @@
 import { ConflictError } from '../../errors/ConflictError';
 import { NotFoundError } from '../../errors/NotFoundError';
 import { categoryRepository } from './category.repository';
-import { createCategorySchema } from './category.schema';
+import { createCategorySchema, updateCategory, updateCategorySchema } from './category.schema';
 
 export const categoryService = {
     async create(data: createCategorySchema) {
@@ -17,13 +17,20 @@ export const categoryService = {
     async findByID(id: string) {
         const category = await categoryRepository.findByID(id);
 
-        console.log('ID:', id);
-        console.log('CATEGORY:', category);
 
         if (!category) {
             throw new NotFoundError('ID não encontrado');
         }
 
-        return console.log('CATEGORY:', category);
+        return category;
     },
+
+
+    async updateCategory(data:updateCategorySchema){
+        const existingId = await categoryRepository.findByID(data.id)
+        if (!existingId) throw new NotFoundError("ID não encontrado")
+        /*const existingName = await categoryRepository.findByname(data.name)
+        if(existingName) throw new ConflictError("Já existe uma categoria com esse nome")
+        */
+    }
 };
