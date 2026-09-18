@@ -1,5 +1,8 @@
 import { Router } from 'express';
+import categoryRouter from '../modules/category/category.routes';
 
-const routes = Router();
+const router = Router();
 
-export { routes };
+router.use('/categoria', categoryRouter);
+
+export default router;

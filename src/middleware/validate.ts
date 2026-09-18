@@ -3,18 +3,18 @@ import { Request, Response, NextFunction } from 'express';
 
 type RequestPart = 'body' | 'params' | 'query';
 
-export function validar(schema: ZodType, origem: RequestPart = 'body') {
+export function validate(schema: ZodType, origem: RequestPart = 'body') {
     return (req: Request, res: Response, next: NextFunction) => {
-        const resultado = schema.safeParse(req[origem]);
+        const result = schema.safeParse(req[origem]);
 
-        if (!resultado.success) {
+        if (!result.success) {
             return res.status(400).json({
                 message: 'Dados inválidos',
-                errors: resultado.error.flatten().fieldErrors,
+                errors: result.error.flatten().fieldErrors,
             });
         }
 
-        req[origem] = resultado.data;
+        req[origem] = result.data;
 
         next();
     };
