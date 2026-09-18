@@ -1,11 +1,32 @@
 import { Request, Response, NextFunction } from 'express';
 import { categoryService } from './category.service';
+import { categoryRepository } from './category.repository';
+import { CategoryParams } from './category.type';
 
 export const categoryController = {
     async create(req: Request, res: Response, next: NextFunction) {
         try {
             const category = await categoryService.create(req.body);
             res.status(201).json(category);
+        } catch (error) {
+            next(error);
+        }
+    },
+
+    async findAll(_req: Request, res: Response, next: NextFunction) {
+        try {
+            const allCategory = await categoryService.findAll();
+            res.status(200).json(allCategory);
+        } catch (error) {
+            next(error);
+        }
+    },
+
+    async findByID(req: Request<CategoryParams>, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params;
+            const category = await categoryRepository.findByID(id);
+            res.status(200).json(category);
         } catch (error) {
             next(error);
         }

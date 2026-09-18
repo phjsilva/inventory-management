@@ -5,4 +5,8 @@ export const createCategorySchema = z.object({
     description: z.string().optional(),
 });
 
+export const findIDSchema = z.object({
+    id: z.string().uuid(),
+});
+
 export type createCategorySchema = z.infer<typeof createCategorySchema>;
