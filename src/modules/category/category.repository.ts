@@ -28,13 +28,13 @@ export const categoryRepository = {
         });
     },
 
-    updateCategory(data:updateCategorySchema) {
+    updateCategory(id: string, data: updateCategorySchema) {
         return prisma.category.update({
-            where: {id:data.id},
+            where: { id },
             data: {
-            name: data.name,
-            description: data.description
-            }
-        })
-    }
+                name: data.name,
+                description: data.description,
+            },
+        });
+    },
 };
