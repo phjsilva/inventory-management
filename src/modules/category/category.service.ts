@@ -10,8 +10,14 @@ export const categoryService = {
         return categoryRepository.create(data);
     },
 
-    findAll() {
-        return categoryRepository.findAll();
+    async findAll() {
+        const categories = await categoryRepository.findAll();
+
+        return categories.map((category) => ({
+            name: category.name,
+            description: category.description,
+            productCount: category._count.products,
+        }));
     },
 
     async findByID(id: string) {
@@ -21,7 +27,11 @@ export const categoryService = {
             throw new NotFoundError('ID não encontrado');
         }
 
-        return category;
+        return {
+            name: category.name,
+            description: category.description,
+            productCount: category._count.products,
+        };
     },
 
     async updateCategory(id: string, data: updateCategorySchema) {

@@ -14,6 +14,11 @@ export const categoryRepository = {
             select: {
                 name: true,
                 description: true,
+                _count: {
+                    select: {
+                        products: true,
+                    },
+                },
             },
         });
     },
@@ -23,6 +28,11 @@ export const categoryRepository = {
             select: {
                 name: true,
                 description: true,
+                _count: {
+                    select: {
+                        products: true,
+                    },
+                },
             },
             where: { id },
         });
