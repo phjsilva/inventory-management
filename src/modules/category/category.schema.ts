@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const createCategorySchema = z.object({
+export const createSchema = z.object({
     name: z.string().min(1, 'Nome é obrigatório'),
     description: z.string().optional(),
 });
@@ -14,5 +14,5 @@ export const updateSchema = z.object({
     description: z.string().optional(),
 });
 
-export type createCategorySchema = z.infer<typeof createCategorySchema>;
-export type updateCategorySchema = z.infer<typeof updateSchema>;
+export type createSchema = z.infer<typeof createSchema>;
+export type updateSchema = z.infer<typeof updateSchema>;

@@ -1,9 +1,9 @@
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
-import { env } from 'process';
 import { errorHandler } from './middleware/errorHandler';
 import router from './routes';
+import { env } from './config/env';
 
 const app = express();
 

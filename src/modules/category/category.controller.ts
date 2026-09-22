@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { categoryService } from './category.service';
-import { categoryRepository } from './category.repository';
 import { CategoryParams } from './category.type';
-import { ca } from 'zod/locales';
 
 export const categoryController = {
     async create(req: Request, res: Response, next: NextFunction) {
@@ -36,8 +34,18 @@ export const categoryController = {
     async upadate(req: Request<CategoryParams>, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
-            const category = await categoryService.updateCategory(id, req.body);
-            res.status(201).json(category);
+            const category = await categoryService.update(id, req.body);
+            res.status(200).json(category);
+        } catch (error) {
+            next(error);
+        }
+    },
+
+    async delete(req: Request<CategoryParams>, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params;
+            const category = await categoryService.delete(id);
+            res.status(200).json(category);
         } catch (error) {
             next(error);
         }

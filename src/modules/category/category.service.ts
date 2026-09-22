@@ -1,10 +1,10 @@
 import { ConflictError } from '../../errors/ConflictError';
 import { NotFoundError } from '../../errors/NotFoundError';
 import { categoryRepository } from './category.repository';
-import { createCategorySchema, updateCategorySchema } from './category.schema';
+import { createSchema, updateSchema } from './category.schema';
 
 export const categoryService = {
-    async create(data: createCategorySchema) {
+    async create(data: createSchema) {
         const existing = await categoryRepository.findByname(data.name);
         if (existing) throw new ConflictError('Já existe uma categoria com esse nome');
         return categoryRepository.create(data);
@@ -34,13 +34,28 @@ export const categoryService = {
         };
     },
 
-    async updateCategory(id: string, data: updateCategorySchema) {
+    async update(id: string, data: updateSchema) {
         if (data.name) {
             const category = await categoryRepository.findByname(data.name);
             if (category && category.id !== id) {
                 throw new ConflictError('Já existe uma categoria com esse nome');
             }
         }
-        return categoryRepository.updateCategory(id, data);
+        return categoryRepository.update(id, data);
+    },
+
+    async delete(id: string) {
+        const existing = await categoryRepository.findByID(id);
+        if (!existing) {
+            throw new NotFoundError('ID não encontrado');
+        }
+        const productCount = await categoryRepository.countProductsByCategory(id);
+        if (productCount <= 0) {
+            throw new ConflictError(
+                'Não é possível excluir a categoria porque existem produtos associados',
+            );
+        }
+
+        return categoryRepository.deleteCategory(id);
     },
 };

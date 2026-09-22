@@ -1,8 +1,8 @@
 import { prisma } from '../../config/prisma';
-import { createCategorySchema, updateCategorySchema } from './category.schema';
+import { createSchema, updateSchema } from './category.schema';
 
 export const categoryRepository = {
-    create(data: createCategorySchema) {
+    create(data: createSchema) {
         return prisma.category.create({ data });
     },
 
@@ -38,13 +38,27 @@ export const categoryRepository = {
         });
     },
 
-    updateCategory(id: string, data: updateCategorySchema) {
+    update(id: string, data: updateSchema) {
         return prisma.category.update({
             where: { id },
             data: {
                 name: data.name,
                 description: data.description,
             },
+        });
+    },
+
+    countProductsByCategory(id: string) {
+        return prisma.product.count({
+            where: {
+                categoryId: id,
+            },
+        });
+    },
+
+    deleteCategory(id: string) {
+        return prisma.category.delete({
+            where: { id },
         });
     },
 };
