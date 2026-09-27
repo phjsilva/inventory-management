@@ -1,11 +1,11 @@
 import { Router } from 'express';
 
 import { validate } from '../../middleware/validate';
-import { createSchema } from './product.schema';
+import { createProductSchema } from './product.schema';
 import { productController } from './product.controller';
 
 const router = Router();
 
-router.post('/', validate(createSchema), productController.create);
+router.post('/', validate(createProductSchema), productController.create);
 
 export default router;

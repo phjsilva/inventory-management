@@ -1,16 +1,16 @@
 import { ConflictError } from '../../errors/ConflictError';
 import { NotFoundError } from '../../errors/NotFoundError';
 import { categoryRepository } from './category.repository';
-import { createSchema, updateSchema } from './category.schema';
+import { CreateCategoryInput, UpdateCategoryInput } from './category.schema';
 
 export const categoryService = {
-    async create(data: createSchema) {
-        const existing = await categoryRepository.findByname(data.name);
+    async create(data: CreateCategoryInput) {
+        const existing = await categoryRepository.findByName(data.name);
         if (existing) throw new ConflictError('Já existe uma categoria com esse nome');
         return categoryRepository.create(data);
     },
 
-    async findAll() {
+    async list() {
         const categories = await categoryRepository.findAll();
 
         return categories.map((category) => ({
@@ -21,11 +21,11 @@ export const categoryService = {
         }));
     },
 
-    async findByID(id: string) {
-        const category = await categoryRepository.findByID(id);
+    async getById(id: string) {
+        const category = await categoryRepository.findById(id);
 
         if (!category) {
-            throw new NotFoundError('ID não encontrado');
+            throw new NotFoundError('Categoria não encontrada');
         }
 
         return {
@@ -36,9 +36,9 @@ export const categoryService = {
         };
     },
 
-    async update(id: string, data: updateSchema) {
+    async update(id: string, data: UpdateCategoryInput) {
         if (data.name) {
-            const category = await categoryRepository.findByname(data.name);
+            const category = await categoryRepository.findByName(data.name);
             if (category && category.id !== id) {
                 throw new ConflictError('Já existe uma categoria com esse nome');
             }
@@ -47,17 +47,17 @@ export const categoryService = {
     },
 
     async delete(id: string) {
-        const existing = await categoryRepository.findByID(id);
-        if (!existing) {
-            throw new NotFoundError('ID não encontrado');
+        const category = await categoryRepository.findById(id);
+        if (!category) {
+            throw new NotFoundError('Categoria não encontrada');
         }
-        const productCount = await categoryRepository.countProductsByCategory(id);
+        const productCount = await categoryRepository.countProducts(id);
         if (productCount > 0) {
             throw new ConflictError(
                 'Não é possível excluir a categoria porque existem produtos associados',
             );
         }
 
-        return categoryRepository.deleteCategory(id);
+        return categoryRepository.delete(id);
     },
 };

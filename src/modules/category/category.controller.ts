@@ -12,19 +12,19 @@ export const categoryController = {
         }
     },
 
-    async findAll(_req: Request, res: Response, next: NextFunction) {
+    async list(_req: Request, res: Response, next: NextFunction) {
         try {
-            const allCategory = await categoryService.findAll();
-            res.status(200).json(allCategory);
+            const categories = await categoryService.list();
+            res.status(200).json(categories);
         } catch (error) {
             next(error);
         }
     },
 
-    async findByID(req: Request<CategoryParams>, res: Response, next: NextFunction) {
+    async getById(req: Request<CategoryParams>, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
-            const category = await categoryService.findByID(id);
+            const category = await categoryService.getById(id);
             res.status(200).json(category);
         } catch (error) {
             next(error);
@@ -44,8 +44,8 @@ export const categoryController = {
     async delete(req: Request<CategoryParams>, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
-            const category = await categoryService.delete(id);
-            res.status(200).json(category);
+            await categoryService.delete(id);
+            res.status(204).send();
         } catch (error) {
             next(error);
         }
