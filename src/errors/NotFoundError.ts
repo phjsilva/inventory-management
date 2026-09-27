@@ -1,7 +1,7 @@
 import { AppError } from './AppError';
 
 export class NotFoundError extends AppError {
-    constructor(message = 'Recurso nâo encontrado') {
+    constructor(message = 'Recurso não encontrado') {
         super(message, 404);
     }
 }

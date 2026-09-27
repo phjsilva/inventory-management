@@ -14,6 +14,7 @@ export const categoryService = {
         const categories = await categoryRepository.findAll();
 
         return categories.map((category) => ({
+            id: category.id,
             name: category.name,
             description: category.description,
             productCount: category._count.products,
@@ -28,6 +29,7 @@ export const categoryService = {
         }
 
         return {
+            id: category.id,
             name: category.name,
             description: category.description,
             productCount: category._count.products,
@@ -50,7 +52,7 @@ export const categoryService = {
             throw new NotFoundError('ID não encontrado');
         }
         const productCount = await categoryRepository.countProductsByCategory(id);
-        if (productCount <= 0) {
+        if (productCount > 0) {
             throw new ConflictError(
                 'Não é possível excluir a categoria porque existem produtos associados',
             );

@@ -13,7 +13,7 @@ router.patch(
     '/:id',
     validate(paramsIDSchema, 'params'),
     validate(updateSchema),
-    categoryController.upadate,
+    categoryController.update,
 );
 
 router.delete('/:id', validate(paramsIDSchema, 'params'), categoryController.delete);

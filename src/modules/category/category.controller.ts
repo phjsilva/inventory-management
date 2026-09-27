@@ -31,7 +31,7 @@ export const categoryController = {
         }
     },
 
-    async upadate(req: Request<CategoryParams>, res: Response, next: NextFunction) {
+    async update(req: Request<CategoryParams>, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
             const category = await categoryService.update(id, req.body);

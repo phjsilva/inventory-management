@@ -12,6 +12,7 @@ export const categoryRepository = {
     findAll() {
         return prisma.category.findMany({
             select: {
+                id: true,
                 name: true,
                 description: true,
                 _count: {
@@ -26,6 +27,7 @@ export const categoryRepository = {
     findByID(id: string) {
         return prisma.category.findUnique({
             select: {
+                id: true,
                 name: true,
                 description: true,
                 _count: {
@@ -37,13 +39,14 @@ export const categoryRepository = {
             where: { id },
         });
     },
-
     update(id: string, data: updateSchema) {
         return prisma.category.update({
             where: { id },
-            data: {
-                name: data.name,
-                description: data.description,
+            data: { name: data.name, description: data.description },
+            select: {
+                name: true,
+                description: true,
+                _count: { select: { products: true } },
             },
         });
     },
@@ -58,6 +61,11 @@ export const categoryRepository = {
 
     deleteCategory(id: string) {
         return prisma.category.delete({
+            select: {
+                id: true,
+                name: true,
+                description: true,
+            },
             where: { id },
         });
     },
